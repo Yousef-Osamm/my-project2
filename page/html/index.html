@@ -4,15 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Tech From Palestine — مؤسسة فلسطينية تمكّن الشباب من خلال التكنولوجيا والتعليم والابتكار وبناء المشاريع.">
-  <meta name="theme-color" content="#263029">
+  <meta name="theme-color" content="#0b1730">
   <title>Tech From Palestine | التكنولوجيا من فلسطين</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&family=Tajawal:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont/tabler-icons.min.css">
   <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 </head>
 <body data-page="home">
-  <a class="skip-link" href="#main-content">تجاوز إلى المحتوى</a>
+  <canvas id="ambient-field" class="ambient-field" aria-hidden="true"></canvas>
+  <a class="skip-link" href="#main-content" data-i18n="skip-link">تجاوز إلى المحتوى</a>
+
+  <div class="page-loader" aria-hidden="true"><div class="page-loader__spinner"></div></div>
 
   <header class="site-header" data-site-header>
     <div class="container navbar">
@@ -20,28 +26,36 @@
         <span class="brand-lockup__mark" aria-hidden="true">
           <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M16 3 28.5 10.2v11.6L16 29 3.5 21.8V10.2L16 3Z" stroke="currentColor" stroke-width="1.8"/>
-            <path d="m10 12 6-3.5 6 3.5-6 3.5-6-3.5Zm0 7 6-3.5 6 3.5-6 3.5-6-3.5Z" stroke="#e03c31" stroke-width="1.6"/>
+            <path d="m10 12 6-3.5 6 3.5-6 3.5-6-3.5Zm0 7 6-3.5 6 3.5-6 3.5-6-3.5Z" stroke="currentColor" stroke-width="1.6"/>
           </svg>
         </span>
         <span class="brand-lockup__text">
-          <span class="brand-lockup__name">Tech From Palestine</span>
-          <span class="brand-lockup__tagline">Developing Software, Society &amp; Palestine</span>
+          <span class="brand-lockup__name" data-i18n="brand-name">Tech From Palestine</span>
+          <span class="brand-lockup__tagline" data-i18n="brand-tagline">Developing Software, Society &amp; Palestine</span>
         </span>
       </a>
 
       <nav class="primary-nav" aria-label="التنقل الرئيسي">
         <ul class="nav-links">
-          <li><a href="./index.html" data-page-link="home">الرئيسية</a></li>
-          <li><a href="./about.html" data-page-link="about">من نحن</a></li>
-          <li><a href="./courses.html" data-page-link="courses">الدورات</a></li>
-          <li><a href="./projects.html" data-page-link="projects">المشاريع</a></li>
-          <li><a href="./community.html" data-page-link="community">المجتمع</a></li>
-          <li><a href="./contact.html" data-page-link="contact">تواصل معنا</a></li>
+          <li><a href="./index.html" data-page-link="home" data-i18n="nav-home">الرئيسية</a></li>
+          <li><a href="./about.html" data-page-link="about" data-i18n="nav-about">من نحن</a></li>
+          <li><a href="./courses.html" data-page-link="courses" data-i18n="nav-courses">الدورات</a></li>
+          <li><a href="./projects.html" data-page-link="projects" data-i18n="nav-projects">المشاريع</a></li>
+          <li><a href="./community.html" data-page-link="community" data-i18n="nav-community">المجتمع</a></li>
+          <li><a href="./contact.html" data-page-link="contact" data-i18n="nav-contact">تواصل معنا</a></li>
         </ul>
       </nav>
 
       <div class="nav-actions">
-        <a class="button button--primary button--small" href="./community.html">انضم إلينا <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a>
+        <button class="theme-switcher" data-theme-switcher type="button" aria-label="تبديل المظهر" title="تبديل المظهر">
+          <i class="ti ti-moon icon-moon" aria-hidden="true"></i>
+          <i class="ti ti-sun icon-sun" aria-hidden="true"></i>
+        </button>
+        <button class="lang-switcher" data-lang-switcher type="button" aria-label="تبديل اللغة">
+          <span class="lang-switcher__icon" aria-hidden="true">🌐</span>
+          <span class="lang-switcher__label">EN</span>
+        </button>
+        <a class="button button--primary button--small" href="./community.html" data-i18n="nav-join">انضم إلينا <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a>
       </div>
 
       <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="فتح القائمة">
@@ -55,16 +69,26 @@
       <div class="container mobile-nav__inner">
         <nav aria-label="التنقل على الهاتف">
           <ul class="mobile-nav__links">
-            <li><a href="./index.html" data-page-link="home"><span>الرئيسية</span><i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></li>
-            <li><a href="./about.html" data-page-link="about"><span>من نحن</span><i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></li>
-            <li><a href="./courses.html" data-page-link="courses"><span>الدورات</span><i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></li>
-            <li><a href="./projects.html" data-page-link="projects"><span>المشاريع</span><i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></li>
-            <li><a href="./community.html" data-page-link="community"><span>المجتمع</span><i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></li>
-            <li><a href="./contact.html" data-page-link="contact"><span>تواصل معنا</span><i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></li>
+            <li><a href="./index.html" data-page-link="home"><span data-i18n="nav-home">الرئيسية</span><i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></li>
+            <li><a href="./about.html" data-page-link="about"><span data-i18n="nav-about">من نحن</span><i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></li>
+            <li><a href="./courses.html" data-page-link="courses"><span data-i18n="nav-courses">الدورات</span><i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></li>
+            <li><a href="./projects.html" data-page-link="projects"><span data-i18n="nav-projects">المشاريع</span><i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></li>
+            <li><a href="./community.html" data-page-link="community"><span data-i18n="nav-community">المجتمع</span><i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></li>
+            <li><a href="./contact.html" data-page-link="contact"><span data-i18n="nav-contact">تواصل معنا</span><i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></li>
           </ul>
         </nav>
         <div class="mobile-nav__actions">
-          <a class="button button--primary" href="./community.html">انضم إلينا <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a>
+          <div class="mobile-nav__actions-row">
+            <button class="theme-switcher" data-theme-switcher type="button" aria-label="تبديل المظهر" title="تبديل المظهر">
+              <i class="ti ti-moon icon-moon" aria-hidden="true"></i>
+              <i class="ti ti-sun icon-sun" aria-hidden="true"></i>
+            </button>
+            <button class="lang-switcher" data-lang-switcher type="button" aria-label="تبديل اللغة">
+              <span class="lang-switcher__icon" aria-hidden="true">🌐</span>
+              <span class="lang-switcher__label">EN</span>
+            </button>
+          </div>
+          <a class="button button--primary" href="./community.html" data-i18n="nav-join">انضم إلينا <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a>
         </div>
       </div>
     </div>
@@ -74,18 +98,18 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="container hero-grid">
         <div class="hero-copy" data-reveal>
-          <p class="hero-kicker">Tech From Palestine</p>
-          <p class="hero-tagline">Developing Software, Society &amp; Palestine</p>
-          <h1 class="hero-title" id="hero-title">نبني <span>المستقبل</span><br>من فلسطين.</h1>
-          <p class="hero-description">نُمكّن الشباب الفلسطيني من خلال التكنولوجيا والتعليم والابتكار، ونحوّل المعرفة إلى مهارات ومشاريع وفرص حقيقية.</p>
+          <p class="hero-kicker" data-i18n="hero-kicker">Tech From Palestine</p>
+          <p class="hero-tagline" data-i18n="hero-tagline">Developing Software, Society &amp; Palestine</p>
+          <h1 class="hero-title" id="hero-title" data-i18n="hero-title">نبني <span>المستقبل</span><br>من فلسطين.</h1>
+          <p class="hero-description" data-i18n="hero-description">نُمكّن الشباب الفلسطيني من خلال التكنولوجيا والتعليم والابتكار، ونحوّل المعرفة إلى مهارات ومشاريع وفرص حقيقية.</p>
           <div class="button-group">
-            <a class="button button--primary" href="./courses.html">استكشف الدورات <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a>
-            <a class="button button--outline" href="./projects.html">شاهد المشاريع <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a>
+            <a class="button button--primary" href="./courses.html" data-i18n="hero-cta-courses">استكشف الدورات <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a>
+            <a class="button button--outline" href="./projects.html" data-i18n="hero-cta-projects">شاهد المشاريع <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a>
           </div>
           <div class="hero-meta" aria-label="معلومات مختصرة">
-            <span><i class="ti ti-school icon" aria-hidden="true"></i> تعلّم تطبيقي</span>
-            <span><i class="ti ti-code icon" aria-hidden="true"></i> مشاريع حقيقية</span>
-            <span><i class="ti ti-users icon" aria-hidden="true"></i> مجتمع متعاون</span>
+            <span data-i18n="hero-meta-1"><i class="ti ti-school icon" aria-hidden="true"></i> تعلّم تطبيقي</span>
+            <span data-i18n="hero-meta-2"><i class="ti ti-code icon" aria-hidden="true"></i> مشاريع حقيقية</span>
+            <span data-i18n="hero-meta-3"><i class="ti ti-users icon" aria-hidden="true"></i> مجتمع متعاون</span>
           </div>
         </div>
 
@@ -94,8 +118,32 @@
             <img src="https://images.pexels.com/photos/16323454/pexels-photo-16323454.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="شباب يتعاونون حول حاسوب في مساحة عمل تقنية — Ofspace LLC، Culture on Pexels" width="1200" height="1500">
             <span class="hero-media__shade" aria-hidden="true"></span>
             <figcaption class="hero-media__label">المعرفة تصبح أثرًا.<small>نخلق مساحة يتعلم فيها الشباب، ويجربون، ويبنون شيئًا مفيدًا.</small></figcaption>
+            <span class="floating-badge floating-badge--top" aria-hidden="true" data-i18n="hero-badge-1"><i class="ti ti-rocket icon" style="color: var(--color-accent);"></i> مشاريع حقيقية</span>
+            <span class="floating-badge floating-badge--bottom" aria-hidden="true" data-i18n="hero-badge-2"><i class="ti ti-users-group icon" style="color: var(--color-accent);"></i> +1200 عضو</span>
           </figure>
-         
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="tech-marquee" aria-label="التقنيات">
+          <div class="tech-marquee__track">
+            <span class="tech-marquee__item"><i class="ti ti-brand-html5 icon" aria-hidden="true"></i> HTML5</span>
+            <span class="tech-marquee__item"><i class="ti ti-brand-css3 icon" aria-hidden="true"></i> CSS3</span>
+            <span class="tech-marquee__item"><i class="ti ti-brand-javascript icon" aria-hidden="true"></i> JavaScript</span>
+            <span class="tech-marquee__item"><i class="ti ti-brand-python icon" aria-hidden="true"></i> Python</span>
+            <span class="tech-marquee__item"><i class="ti ti-brain icon" aria-hidden="true"></i> AI</span>
+            <span class="tech-marquee__item"><i class="ti ti-device-mobile icon" aria-hidden="true"></i> React</span>
+            <span class="tech-marquee__item"><i class="ti ti-database icon" aria-hidden="true"></i> Node.js</span>
+            <span class="tech-marquee__item"><i class="ti ti-cloud icon" aria-hidden="true"></i> Cloud</span>
+            <span class="tech-marquee__item"><i class="ti ti-brand-html5 icon" aria-hidden="true"></i> HTML5</span>
+            <span class="tech-marquee__item"><i class="ti ti-brand-css3 icon" aria-hidden="true"></i> CSS3</span>
+            <span class="tech-marquee__item"><i class="ti ti-brand-javascript icon" aria-hidden="true"></i> JavaScript</span>
+            <span class="tech-marquee__item"><i class="ti ti-brand-python icon" aria-hidden="true"></i> Python</span>
+            <span class="tech-marquee__item"><i class="ti ti-brain icon" aria-hidden="true"></i> AI</span>
+            <span class="tech-marquee__item"><i class="ti ti-device-mobile icon" aria-hidden="true"></i> React</span>
+            <span class="tech-marquee__item"><i class="ti ti-database icon" aria-hidden="true"></i> Node.js</span>
+            <span class="tech-marquee__item"><i class="ti ti-cloud icon" aria-hidden="true"></i> Cloud</span>
+          </div>
         </div>
       </div>
     </section>
@@ -103,12 +151,12 @@
     <section class="section section--soft" aria-labelledby="mission-title">
       <div class="container pull-quote-layout">
         <div class="pull-quote-layout__aside" data-reveal>
-          <span class="eyebrow">من نحن</span>
-          <h2 class="section-title" id="mission-title">التقنية أداة لبناء مجتمع أقوى.</h2>
-          <p class="body-copy mission-note">نصل بين التعلّم والعمل، ونمنح الأفكار الفلسطينية مساحة لتُختبر وتكبر.</p>
-          <a class="text-link mission-link" href="./about.html">اكتشف قصتنا <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a>
+          <span class="eyebrow" data-i18n="section-about">من نحن</span>
+          <h2 class="section-title" id="mission-title" data-i18n="section-mission">التقنية أداة لبناء مجتمع أقوى.</h2>
+          <p class="body-copy mission-note" data-i18n="section-mission-note">نصل بين التعلّم والعمل، ونمنح الأفكار الفلسطينية مساحة لتُختبر وتكبر.</p>
+          <a class="text-link mission-link" href="./about.html" data-i18n="section-mission-link">اكتشف قصتنا <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a>
         </div>
-        <blockquote class="pull-quote" data-reveal>نصنع فرصًا حقيقية للشباب الفلسطيني كي يتعلموا، يبتكروا، ويتركوا أثرًا مستدامًا.</blockquote>
+        <blockquote class="pull-quote" data-reveal data-i18n="pull-quote">نصنع فرصًا حقيقية للشباب الفلسطيني كي يتعلموا، يبتكروا، ويتركوا أثرًا مستدامًا.</blockquote>
       </div>
     </section>
 
@@ -116,16 +164,16 @@
       <div class="container">
         <div class="section-heading" data-reveal>
           <div class="section-heading__copy">
-            <span class="eyebrow">أثر يتسع</span>
-            <h2 class="section-title" id="stats-title">أرقام تحكي عن مجتمع يتحرك.</h2>
+            <span class="eyebrow" data-i18n="stats-eyebrow">أثر يتسع</span>
+            <h2 class="section-title" id="stats-title" data-i18n="stats-title">أرقام تحكي عن مجتمع يتحرك.</h2>
           </div>
-          <p class="section-heading__aside">كل رقم هو شخص تعلّم، فريق تعاون، أو فكرة وجدت طريقها إلى التطبيق.</p>
+          <p class="section-heading__aside" data-i18n="stats-aside">كل رقم هو شخص تعلّم، فريق تعاون، أو فكرة وجدت طريقها إلى التطبيق.</p>
         </div>
         <div class="stats-cluster" aria-label="إحصائيات المؤسسة">
-          <div class="stat" data-reveal><div class="stat__value"><span data-count="24">24</span><span class="stat__suffix">+</span></div><span class="stat__label">دورة تقنية</span></div>
-          <div class="stat" data-reveal><div class="stat__value"><span data-count="18">18</span><span class="stat__suffix">+</span></div><span class="stat__label">مشروعًا</span></div>
-          <div class="stat" data-reveal><div class="stat__value"><span data-count="640">640</span><span class="stat__suffix">+</span></div><span class="stat__label">متدربًا</span></div>
-          <div class="stat" data-reveal><div class="stat__value"><span data-count="1200">1,200</span><span class="stat__suffix">+</span></div><span class="stat__label">عضوًا في المجتمع</span></div>
+          <div class="stat" data-reveal><div class="stat__value"><span data-count="24">24</span><span class="stat__suffix">+</span></div><span class="stat__label" data-i18n="stat-1-label">دورة تقنية</span></div>
+          <div class="stat" data-reveal><div class="stat__value"><span data-count="18">18</span><span class="stat__suffix">+</span></div><span class="stat__label" data-i18n="stat-2-label">مشروعًا</span></div>
+          <div class="stat" data-reveal><div class="stat__value"><span data-count="640">640</span><span class="stat__suffix">+</span></div><span class="stat__label" data-i18n="stat-3-label">متدربًا</span></div>
+          <div class="stat" data-reveal><div class="stat__value"><span data-count="1200">1,200</span><span class="stat__suffix">+</span></div><span class="stat__label" data-i18n="stat-4-label">عضوًا في المجتمع</span></div>
         </div>
       </div>
     </section>
@@ -134,23 +182,23 @@
       <div class="container">
         <div class="section-heading" data-reveal>
           <div class="section-heading__copy">
-            <span class="eyebrow">تعلّم بالممارسة</span>
-            <h2 class="section-title" id="featured-courses-title">دورات تضعك أمام تحديات حقيقية.</h2>
+            <span class="eyebrow" data-i18n="courses-eyebrow">تعلّم بالممارسة</span>
+            <h2 class="section-title" id="featured-courses-title" data-i18n="courses-title">دورات تضعك أمام تحديات حقيقية.</h2>
           </div>
-          <a class="text-link" href="./courses.html">كل الدورات <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a>
+          <a class="text-link" href="./courses.html" data-i18n="courses-link">كل الدورات <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a>
         </div>
         <div class="course-rail" aria-label="الدورات المميزة">
           <article class="course-card" data-reveal>
-            <div class="course-card__art"><span class="course-card__icon"><i class="ti ti-brand-html5 icon" aria-hidden="true"></i></span><span class="course-card__code">01 / WEB</span></div>
-            <div class="course-card__body"><h3 class="course-card__title">أساسيات تطوير الويب</h3><p class="course-card__description">ابنِ صفحات عملية من الصفر باستخدام HTML وCSS وJavaScript.</p><div class="tag-list"><span class="tag">تطوير الويب</span><span class="tag">مبتدئ</span></div><div class="card-meta"><span><i class="ti ti-calendar-event icon" aria-hidden="true"></i> 6 أسابيع</span><span><i class="ti ti-device-laptop icon" aria-hidden="true"></i> تطبيقي</span></div><div class="course-card__footer"><a class="text-link" href="./courses.html#web-foundations">عرض الدورة <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></div></div>
+            <div class="course-card__art"><img class="course-card__image" src="https://images.pexels.com/photos/7988114/pexels-photo-7988114.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=900" alt="شاشة برمجية في بيئة تطوير ويب — Mikhail Nilov on Pexels" loading="lazy" decoding="async" width="1200" height="800"><span class="course-card__icon"><i class="ti ti-brand-html5 icon" aria-hidden="true"></i></span><span class="course-card__code">01 / WEB</span></div>
+            <div class="course-card__body"><h3 class="course-card__title" data-i18n="course-1-title">أساسيات تطوير الويب</h3><p class="course-card__description" data-i18n="course-1-desc">ابنِ صفحات عملية من الصفر باستخدام HTML وCSS وJavaScript.</p><div class="tag-list"><span class="tag" data-i18n="course-1-tag-1">تطوير الويب</span><span class="tag" data-i18n="course-1-tag-2">مبتدئ</span></div><div class="card-meta"><span><i class="ti ti-calendar-event icon" aria-hidden="true"></i> <span data-i18n="course-1-duration">6 أسابيع</span></span><span><i class="ti ti-device-laptop icon" aria-hidden="true"></i> <span data-i18n="course-1-type">تطبيقي</span></span></div><div class="course-card__footer"><a class="text-link" href="./courses.html#web-foundations" data-i18n="course-1-link">عرض الدورة <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></div></div>
           </article>
           <article class="course-card" data-reveal>
-            <div class="course-card__art"><span class="course-card__icon"><i class="ti ti-brand-python icon" aria-hidden="true"></i></span><span class="course-card__code">02 / CODE</span></div>
-            <div class="course-card__body"><h3 class="course-card__title">Python وحل المشكلات</h3><p class="course-card__description">طوّر طريقة تفكيرك البرمجية عبر تمارين ومشاريع صغيرة متدرجة.</p><div class="tag-list"><span class="tag">البرمجة</span><span class="tag">مبتدئ</span></div><div class="card-meta"><span><i class="ti ti-calendar-event icon" aria-hidden="true"></i> 5 أسابيع</span><span><i class="ti ti-device-laptop icon" aria-hidden="true"></i> تطبيقي</span></div><div class="course-card__footer"><a class="text-link" href="./courses.html#python-problem-solving">عرض الدورة <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></div></div>
+            <div class="course-card__art"><img class="course-card__image" src="https://images.pexels.com/photos/6424590/pexels-photo-6424590.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=900" alt="شاشة حاسوب تعرض كودًا برمجيًا — Nemuel Sereti on Pexels" loading="lazy" decoding="async" width="1200" height="800"><span class="course-card__icon"><i class="ti ti-brand-python icon" aria-hidden="true"></i></span><span class="course-card__code">02 / CODE</span></div>
+            <div class="course-card__body"><h3 class="course-card__title" data-i18n="course-2-title">Python وحل المشكلات</h3><p class="course-card__description" data-i18n="course-2-desc">طوّر طريقة تفكيرك البرمجية عبر تمارين ومشاريع صغيرة متدرجة.</p><div class="tag-list"><span class="tag" data-i18n="course-2-tag-1">البرمجة</span><span class="tag" data-i18n="course-2-tag-2">مبتدئ</span></div><div class="card-meta"><span><i class="ti ti-calendar-event icon" aria-hidden="true"></i> <span data-i18n="course-2-duration">5 أسابيع</span></span><span><i class="ti ti-device-laptop icon" aria-hidden="true"></i> <span data-i18n="course-2-type">تطبيقي</span></span></div><div class="course-card__footer"><a class="text-link" href="./courses.html#python-problem-solving" data-i18n="course-2-link">عرض الدورة <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></div></div>
           </article>
           <article class="course-card" data-reveal>
-            <div class="course-card__art"><span class="course-card__icon"><i class="ti ti-brain icon" aria-hidden="true"></i></span><span class="course-card__code">03 / AI</span></div>
-            <div class="course-card__body"><h3 class="course-card__title">الذكاء الاصطناعي للجميع</h3><p class="course-card__description">افهم المفاهيم الأساسية وحوّل فكرة تقنية إلى تجربة قابلة للاختبار.</p><div class="tag-list"><span class="tag">الذكاء الاصطناعي</span><span class="tag">متوسط</span></div><div class="card-meta"><span><i class="ti ti-calendar-event icon" aria-hidden="true"></i> 4 أسابيع</span><span><i class="ti ti-device-laptop icon" aria-hidden="true"></i> تطبيقي</span></div><div class="course-card__footer"><a class="text-link" href="./courses.html#ai-for-everyone">عرض الدورة <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></div></div>
+            <div class="course-card__art"><img class="course-card__image" src="https://images.pexels.com/photos/18069697/pexels-photo-18069697.png?auto=compress&amp;cs=tinysrgb&amp;w=900" alt="تمثيل بصري للذكاء الاصطناعي — Google DeepMind on Pexels" loading="lazy" decoding="async" width="1200" height="800"><span class="course-card__icon"><i class="ti ti-brain icon" aria-hidden="true"></i></span><span class="course-card__code">03 / AI</span></div>
+            <div class="course-card__body"><h3 class="course-card__title" data-i18n="course-3-title">الذكاء الاصطناعي للجميع</h3><p class="course-card__description" data-i18n="course-3-desc">افهم المفاهيم الأساسية وحوّل فكرة تقنية إلى تجربة قابلة للاختبار.</p><div class="tag-list"><span class="tag" data-i18n="course-3-tag-1">الذكاء الاصطناعي</span><span class="tag" data-i18n="course-3-tag-2">متوسط</span></div><div class="card-meta"><span><i class="ti ti-calendar-event icon" aria-hidden="true"></i> <span data-i18n="course-3-duration">4 أسابيع</span></span><span><i class="ti ti-device-laptop icon" aria-hidden="true"></i> <span data-i18n="course-3-type">تطبيقي</span></span></div><div class="course-card__footer"><a class="text-link" href="./courses.html#ai-for-everyone" data-i18n="course-3-link">عرض الدورة <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></div></div>
           </article>
         </div>
       </div>
@@ -160,23 +208,23 @@
       <div class="container">
         <div class="section-heading" data-reveal>
           <div class="section-heading__copy">
-            <span class="eyebrow">من الفكرة إلى الأثر</span>
-            <h2 class="section-title" id="featured-projects-title">مشاريع تنطلق من احتياجاتنا.</h2>
+            <span class="eyebrow" data-i18n="projects-eyebrow">من الفكرة إلى الأثر</span>
+            <h2 class="section-title" id="featured-projects-title" data-i18n="projects-title">مشاريع تنطلق من احتياجاتنا.</h2>
           </div>
-          <a class="text-link text-link--light" href="./projects.html">شاهد ملف المشاريع <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a>
+          <a class="text-link text-link--light" href="./projects.html" data-i18n="projects-link">شاهد ملف المشاريع <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a>
         </div>
         <div class="project-bento">
           <article class="project-card project-card--featured" data-reveal>
             <div class="project-card__image"><img src="https://images.pexels.com/photos/27141313/pexels-photo-27141313.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="واجهة رقمية ذات بيانات متقدمة — Egor Komarov on Pexels" loading="lazy" width="1200" height="900"></div><span class="project-card__overlay" aria-hidden="true"></span>
-            <div class="project-card__body"><span class="project-card__category">الابتكار</span><h3 class="project-card__title">منصة البيانات المفتوحة</h3><p class="project-card__description">واجهة تساعد المجتمع على استكشاف البيانات المحلية بطريقة أوضح واتخاذ قرارات أفضل.</p><div class="project-card__footer"><div class="project-tech"><span class="tag">JavaScript</span><span class="tag">Data UI</span></div><a class="text-link" href="./projects.html#palestine-open-data">شاهد التفاصيل <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></div></div>
+            <div class="project-card__body"><span class="project-card__category" data-i18n="project-1-category">الابتكار</span><h3 class="project-card__title" data-i18n="project-1-title">منصة البيانات المفتوحة</h3><p class="project-card__description" data-i18n="project-1-desc">واجهة تساعد المجتمع على استكشاف البيانات المحلية بطريقة أوضح واتخاذ قرارات أفضل.</p><div class="project-card__footer"><div class="project-tech"><span class="tag">JavaScript</span><span class="tag">Data UI</span></div><a class="text-link" href="./projects.html#palestine-open-data" data-i18n="project-1-link">شاهد التفاصيل <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></div></div>
           </article>
           <article class="project-card" data-reveal>
             <div class="project-card__image"><img src="https://images.pexels.com/photos/27141314/pexels-photo-27141314.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=900" alt="شاشة تقنية بتصميم رقمي — Egor Komarov on Pexels" loading="lazy" width="900" height="900"></div><span class="project-card__overlay" aria-hidden="true"></span>
-            <div class="project-card__body"><span class="project-card__category">التعليم</span><h3 class="project-card__title">مسار للتعلّم العملي</h3><div class="project-card__footer"><div class="project-tech"><span class="tag">UX</span><span class="tag">Web</span></div><a class="text-link" href="./projects.html#masar-learning" aria-label="شاهد تفاصيل مسار للتعلم العملي"><i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></div></div>
+            <div class="project-card__body"><span class="project-card__category" data-i18n="project-2-category">التعليم</span><h3 class="project-card__title" data-i18n="project-2-title">مسار للتعلّم العملي</h3><div class="project-card__footer"><div class="project-tech"><span class="tag">UX</span><span class="tag">Web</span></div><a class="text-link" href="./projects.html#masar-learning" aria-label="شاهد تفاصيل مسار للتعلم العملي" data-i18n="project-2-link"><i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></div></div>
           </article>
           <article class="project-card" data-reveal>
             <div class="project-card__image"><img src="https://images.pexels.com/photos/27141307/pexels-photo-27141307.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=900" alt="لوحة معلومات رقمية داكنة — Egor Komarov on Pexels" loading="lazy" width="900" height="900"></div><span class="project-card__overlay" aria-hidden="true"></span>
-            <div class="project-card__body"><span class="project-card__category">المجتمع</span><h3 class="project-card__title">وصلة المجتمع</h3><div class="project-card__footer"><div class="project-tech"><span class="tag">Mobile</span><span class="tag">Civic Tech</span></div><a class="text-link" href="./projects.html#wasla-community" aria-label="شاهد تفاصيل وصلة المجتمع"><i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></div></div>
+            <div class="project-card__body"><span class="project-card__category" data-i18n="project-3-category">المجتمع</span><h3 class="project-card__title" data-i18n="project-3-title">وصلة المجتمع</h3><div class="project-card__footer"><div class="project-tech"><span class="tag">Mobile</span><span class="tag">Civic Tech</span></div><a class="text-link" href="./projects.html#wasla-community" aria-label="شاهد تفاصيل وصلة المجتمع" data-i18n="project-3-link"><i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></div></div>
           </article>
         </div>
       </div>
@@ -185,16 +233,16 @@
     <section class="section" aria-labelledby="why-title">
       <div class="container">
         <div class="section-heading" data-reveal>
-          <div class="section-heading__copy"><span class="eyebrow">لماذا نحن؟</span><h2 class="section-title" id="why-title">نتعلم معًا، ونبني بشكل أفضل.</h2></div>
-          <p class="section-heading__aside">منهجنا بسيط: معرفة قابلة للتطبيق، تعاون صادق، ومساحة آمنة للتجربة.</p>
+          <div class="section-heading__copy"><span class="eyebrow" data-i18n="why-eyebrow">لماذا نحن؟</span><h2 class="section-title" id="why-title" data-i18n="why-title">نتعلم معًا، ونبني بشكل أفضل.</h2></div>
+          <p class="section-heading__aside" data-i18n="why-aside">منهجنا بسيط: معرفة قابلة للتطبيق، تعاون صادق، ومساحة آمنة للتجربة.</p>
         </div>
         <div class="feature-ladder">
-          <article class="feature-ladder__item" data-reveal><span class="feature-ladder__icon"><i class="ti ti-school icon" aria-hidden="true"></i></span><div><h3 class="feature-ladder__title">تعليم عملي</h3><p class="feature-ladder__text">نتعلّم من خلال التحديات والممارسة، لا من خلال الحفظ فقط.</p></div></article>
-          <article class="feature-ladder__item" data-reveal><span class="feature-ladder__icon"><i class="ti ti-box-multiple icon" aria-hidden="true"></i></span><div><h3 class="feature-ladder__title">مشاريع حقيقية</h3><p class="feature-ladder__text">نحوّل الأفكار إلى نماذج أولية يمكن مشاركتها وتحسينها.</p></div></article>
-          <article class="feature-ladder__item" data-reveal><span class="feature-ladder__icon"><i class="ti ti-chart-dots-3 icon" aria-hidden="true"></i></span><div><h3 class="feature-ladder__title">تطوير المهارات</h3><p class="feature-ladder__text">نركّز على الأدوات والمهارات التي يحتاجها العمل اليوم.</p></div></article>
-          <article class="feature-ladder__item" data-reveal><span class="feature-ladder__icon"><i class="ti ti-users-group icon" aria-hidden="true"></i></span><div><h3 class="feature-ladder__title">مجتمع تقني</h3><p class="feature-ladder__text">نفتح الأبواب للتعاون، الأسئلة، وتبادل الخبرات بين الأعضاء.</p></div></article>
-          <article class="feature-ladder__item" data-reveal><span class="feature-ladder__icon"><i class="ti ti-route icon" aria-hidden="true"></i></span><div><h3 class="feature-ladder__title">فرص وتعاون</h3><p class="feature-ladder__text">نربط المتعلمين بالمساحات التي تساعدهم على اتخاذ الخطوة التالية.</p></div></article>
-          <article class="feature-ladder__item" data-reveal><span class="feature-ladder__icon"><i class="ti ti-bulb icon" aria-hidden="true"></i></span><div><h3 class="feature-ladder__title">ابتكار وحل مشكلات</h3><p class="feature-ladder__text">نحتفي بالفضول ونصمم حلولًا تنطلق من واقعنا المحلي.</p></div></article>
+          <article class="feature-ladder__item" data-reveal><span class="feature-ladder__icon"><i class="ti ti-school icon" aria-hidden="true"></i></span><div><h3 class="feature-ladder__title" data-i18n="feature-1-title">تعليم عملي</h3><p class="feature-ladder__text" data-i18n="feature-1-text">نتعلّم من خلال التحديات والممارسة، لا من خلال الحفظ فقط.</p></div></article>
+          <article class="feature-ladder__item" data-reveal><span class="feature-ladder__icon"><i class="ti ti-box-multiple icon" aria-hidden="true"></i></span><div><h3 class="feature-ladder__title" data-i18n="feature-2-title">مشاريع حقيقية</h3><p class="feature-ladder__text" data-i18n="feature-2-text">نحوّل الأفكار إلى نماذج أولية يمكن مشاركتها وتحسينها.</p></div></article>
+          <article class="feature-ladder__item" data-reveal><span class="feature-ladder__icon"><i class="ti ti-chart-dots-3 icon" aria-hidden="true"></i></span><div><h3 class="feature-ladder__title" data-i18n="feature-3-title">تطوير المهارات</h3><p class="feature-ladder__text" data-i18n="feature-3-text">نركّز على الأدوات والمهارات التي يحتاجها العمل اليوم.</p></div></article>
+          <article class="feature-ladder__item" data-reveal><span class="feature-ladder__icon"><i class="ti ti-users-group icon" aria-hidden="true"></i></span><div><h3 class="feature-ladder__title" data-i18n="feature-4-title">مجتمع تقني</h3><p class="feature-ladder__text" data-i18n="feature-4-text">نفتح الأبواب للتعاون، الأسئلة، وتبادل الخبرات بين الأعضاء.</p></div></article>
+          <article class="feature-ladder__item" data-reveal><span class="feature-ladder__icon"><i class="ti ti-route icon" aria-hidden="true"></i></span><div><h3 class="feature-ladder__title" data-i18n="feature-5-title">فرص وتعاون</h3><p class="feature-ladder__text" data-i18n="feature-5-text">نربط المتعلمين بالمساحات التي تساعدهم على اتخاذ الخطوة التالية.</p></div></article>
+          <article class="feature-ladder__item" data-reveal><span class="feature-ladder__icon"><i class="ti ti-bulb icon" aria-hidden="true"></i></span><div><h3 class="feature-ladder__title" data-i18n="feature-6-title">ابتكار وحل مشكلات</h3><p class="feature-ladder__text" data-i18n="feature-6-text">نحتفي بالفضول ونصمم حلولًا تنطلق من واقعنا المحلي.</p></div></article>
         </div>
       </div>
     </section>
@@ -202,7 +250,7 @@
     <section class="section section--soft" aria-labelledby="home-cta-title">
       <div class="container">
         <div class="community-cta" data-reveal>
-          <div class="community-cta__inner"><span class="eyebrow">مساحتك القادمة</span><h2 id="home-cta-title">فكرتك تستحق أن ترى النور.</h2><p>انضم إلى مجتمع من الشباب الذين يتعلمون، يتعاونون، ويبنون مستقبلًا تقنيًا فلسطينيًا أكثر حضورًا.</p><a class="button button--accent" href="./community.html">انضم إلى مجتمعنا <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></div>
+          <div class="community-cta__inner"><span class="eyebrow" data-i18n="cta-eyebrow">مساحتك القادمة</span><h2 id="home-cta-title" data-i18n="home-cta-title">فكرتك تستحق أن ترى النور.</h2><p data-i18n="home-cta-text">انضم إلى مجتمع من الشباب الذين يتعلمون، يتعاونون، ويبنون مستقبلًا تقنيًا فلسطينيًا أكثر حضورًا.</p><a class="button button--accent" href="./community.html" data-i18n="home-cta-btn">انضم إلى مجتمعنا <i class="ti ti-arrow-left icon" aria-hidden="true"></i></a></div>
         </div>
       </div>
     </section>
@@ -211,16 +259,17 @@
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
-        <div class="footer-brand"><a class="brand-lockup" href="./index.html" aria-label="Tech From Palestine — الصفحة الرئيسية"><span class="brand-lockup__mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 3 28.5 10.2v11.6L16 29 3.5 21.8V10.2L16 3Z" stroke="currentColor" stroke-width="1.8"/><path d="m10 12 6-3.5 6 3.5-6 3.5-6-3.5Z" stroke="#e03c31" stroke-width="1.6"/></svg></span><span class="brand-lockup__text"><span class="brand-lockup__name">Tech From Palestine</span><span class="brand-lockup__tagline">Developing Software, Society &amp; Palestine</span></span></a><p class="footer-brand__copy">مؤسسة فلسطينية تبني مساحات للتعلم والتجربة والتعاون عبر التكنولوجيا.</p><div class="social-links"><a class="social-link" href="https://www.linkedin.com/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><i class="ti ti-brand-linkedin icon" aria-hidden="true"></i></a><a class="social-link" href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Instagram"><i class="ti ti-brand-instagram icon" aria-hidden="true"></i></a><a class="social-link" href="https://github.com/" target="_blank" rel="noreferrer" aria-label="GitHub"><i class="ti ti-brand-github icon" aria-hidden="true"></i></a></div></div>
-        <div><h2 class="footer-heading">روابط سريعة</h2><ul class="footer-links"><li><a href="./index.html">الرئيسية</a></li><li><a href="./about.html">من نحن</a></li><li><a href="./courses.html">الدورات</a></li></ul></div>
-        <div><h2 class="footer-heading">اكتشف</h2><ul class="footer-links"><li><a href="./projects.html">المشاريع</a></li><li><a href="./community.html">المجتمع</a></li><li><a href="./contact.html">تواصل معنا</a></li></ul></div>
-        <div><h2 class="footer-heading">تواصل معنا</h2><div class="footer-contact"><a href="mailto:hello@techfrompalestine.org">hello@techfrompalestine.org</a><span>فلسطين — نعمل عن بُعد</span><a href="./community.html">انضم إلى المجتمع</a></div></div>
+        <div class="footer-brand"><a class="brand-lockup" href="./index.html" aria-label="Tech From Palestine — الصفحة الرئيسية"><span class="brand-lockup__mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 3 28.5 10.2v11.6L16 29 3.5 21.8V10.2L16 3Z" stroke="currentColor" stroke-width="1.8"/><path d="m10 12 6-3.5 6 3.5-6 3.5-6-3.5Z" stroke="#e03c31" stroke-width="1.6"/></svg></span><span class="brand-lockup__text"><span class="brand-lockup__name" data-i18n="brand-name">Tech From Palestine</span><span class="brand-lockup__tagline" data-i18n="brand-tagline">Developing Software, Society &amp; Palestine</span></span></a><p class="footer-brand__copy" data-i18n="footer-brand-copy">مؤسسة فلسطينية تبني مساحات للتعلم والتجربة والتعاون عبر التكنولوجيا.</p><div class="social-links"><a class="social-link" href="https://www.linkedin.com/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><i class="ti ti-brand-linkedin icon" aria-hidden="true"></i></a><a class="social-link" href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Instagram"><i class="ti ti-brand-instagram icon" aria-hidden="true"></i></a><a class="social-link" href="https://github.com/" target="_blank" rel="noreferrer" aria-label="GitHub"><i class="ti ti-brand-github icon" aria-hidden="true"></i></a></div></div>
+        <div><h2 class="footer-heading" data-i18n="footer-quick-links">روابط سريعة</h2><ul class="footer-links"><li><a href="./index.html" data-i18n="footer-home">الرئيسية</a></li><li><a href="./about.html" data-i18n="footer-about">من نحن</a></li><li><a href="./courses.html" data-i18n="footer-courses">الدورات</a></li></ul></div>
+        <div><h2 class="footer-heading" data-i18n="footer-explore">اكتشف</h2><ul class="footer-links"><li><a href="./projects.html" data-i18n="footer-projects">المشاريع</a></li><li><a href="./community.html" data-i18n="footer-community">المجتمع</a></li><li><a href="./contact.html" data-i18n="footer-contact-link">تواصل معنا</a></li></ul></div>
+        <div><h2 class="footer-heading" data-i18n="footer-contact">تواصل معنا</h2><div class="footer-contact"><a href="mailto:hello@techfrompalestine.org">hello@techfrompalestine.org</a><span data-i18n="footer-location">فلسطين — نعمل عن بُعد</span><a href="./community.html" data-i18n="footer-join">انضم إلى المجتمع</a></div></div>
       </div>
-      <div class="footer-bottom"><span>© <span data-current-year>2026</span> Tech From Palestine. جميع الحقوق محفوظة.</span><div class="footer-bottom__links"><a href="./contact.html">سياسة الخصوصية</a><a href="./contact.html">تواصل معنا</a></div></div>
+      <div class="footer-bottom"><span>© <span data-current-year>2026</span> <span data-i18n="brand-name">Tech From Palestine</span>. <span data-i18n="footer-copyright">جميع الحقوق محفوظة.</span></span><div class="footer-bottom__links"><a href="./contact.html" data-i18n="footer-privacy">سياسة الخصوصية</a><a href="./contact.html" data-i18n="footer-contact-link">تواصل معنا</a></div></div>
     </div>
   </footer>
 
   <script src="../js/content.js" defer></script>
+  <script src="../js/ambient-canvas.js" defer></script>
   <script src="../js/site.js" defer></script>
 </body>
 </html>
